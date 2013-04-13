@@ -18,9 +18,11 @@ Railo: <CFProject/WEB-INF/railo/lib
 
 Sample :
 
+<code>
 &lt;cfset qrCode = new info.jlepage.QRCode() /&gt;<br/>
 &lt;cfset qrCode.setData('Hello World !') /&gt;<br/>
 &lt;cfset qrCode.writeToFile('myQRCode.png') /&gt;<br/>
+</code>
 
 Can be more easy ? :)
 
