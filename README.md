@@ -6,10 +6,10 @@ Coldfusion CFML QR-Code Generator - Write QRCode to a file with less effort
 INSTALL
 ========
 
-1 - Add libraries 
+1 - Add ZXing QRCode libraries <br/>
 Put the jars files on lib folder on your CFML Engine classpath
 
-Coldfusion : <CFPATH>/runtime/lib
+Coldfusion : <CFPATH>/runtime/lib <br/>
 Railo: <CFProject/WEB-INF/railo/lib
 
 2 - Add the CFC to your project
@@ -18,9 +18,9 @@ Railo: <CFProject/WEB-INF/railo/lib
 
 Sample :
 
-<cfset qrCode = new info.jlepage.QRCode() />
-<cfset qrCode.setData('Hello World !') />
-<cfset qrCode.writeToFile('myQRCode.png') />
+&lt;cfset qrCode = new info.jlepage.QRCode() /&gt;<br/>
+&lt;cfset qrCode.setData('Hello World !') /&gt;<br/>
+&lt;cfset qrCode.writeToFile('myQRCode.png') /&gt;<br/>
 
 Can be more easy ? :)
 
@@ -30,19 +30,19 @@ More samples on index.cfm
 ZXING
 ========
 
-Please visite the ZXing project at : 
+Please visite the ZXing project at : <br/>
 http://code.google.com/p/zxing/
 
-ZXING is under Apache License 2.0
+ZXING is under Apache License 2.0 <br/>
 http://www.apache.org/licenses/LICENSE-2.0
 
 
 LICENCE
 ========
 
-Copyright (c) 2013, Jerome Lepage 
+Copyright (c) 2013, Jerome Lepage http://www.jlepage.info
 
-This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License
+This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License <br/>
 http://creativecommons.org/licenses/by-sa/3.0/
 
 Unless required by applicable law or agreed to in writing, software
