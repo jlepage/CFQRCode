@@ -9,8 +9,8 @@ INSTALL
 1 - Add ZXing QRCode libraries <br/>
 Put the jars files on lib folder on your CFML Engine classpath
 
-Coldfusion : <CFPATH>/runtime/lib <br/>
-Railo: <CFProject/WEB-INF/railo/lib
+Coldfusion : &lt;CFPATH&gt;/runtime/lib <br/>
+Railo: &lt;CFProject&gt;/WEB-INF/railo/lib
 
 2 - Add the CFC to your project
 
