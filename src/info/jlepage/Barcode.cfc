@@ -13,7 +13,6 @@
 	*/
 
 	<cffunction name="init">
-
 		<cfset variables.data = '' />
 		<cfset variables.width = 200 />
 		<cfset variables.height = 50 />
@@ -68,7 +67,6 @@
 
 		<cfset _generateByteMatrix() />
 		<cfset oMatrixToImageWriter.writeToFile(variables.byteMatrix, variables.format, oFile, oMatrixToImageConfig) />
-
 	</cffunction>
 
 	<cffunction name="_getErrorCorrectionLevel" access="private">
@@ -82,7 +80,6 @@
 	</cffunction>
 
 	<cffunction name="_generateByteMatrix" access="private">
-
 		<cfset Writer = _getWriter() />
 		<cfset EncodeHintType = createObject('java', 'com.google.zxing.EncodeHintType') />
 
@@ -90,11 +87,9 @@
 		<cfset hints[EncodeHintType.ERROR_CORRECTION]= _getErrorCorrectionLevel() />
 
 		<cfset variables.byteMatrix = Writer.encode(variables.data, _getBarcodeFormat(), variables.width, variables.height, hints) />
-
 	</cffunction>
 
 	<cffunction name="_getWriter" access="private">
-
 		<cfif variables.type eq 'CODE_128'>
 			<cfreturn createObject('java', 'com.google.zxing.oned.Code128Writer').init() />
 
@@ -123,6 +118,5 @@
 			<cfreturn createObject('java', 'com.google.zxing.oned.Code128Writer').init() />
 		</cfif>
 	</cffunction>
-
 
 </cfcomponent>

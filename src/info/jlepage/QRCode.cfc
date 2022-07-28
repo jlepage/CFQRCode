@@ -13,7 +13,6 @@
 	*/
 
 	<cffunction name="init">
-
 		<cfset variables.data = '' />
 		<cfset variables.width = 400 />
 		<cfset variables.height = 400 />
@@ -93,7 +92,6 @@
 		<cfset value = ipNumber.decode('0x' & a & arguments.hexColor) />
 
 		<cfreturn value />
-
 	</cffunction>
 
 	<cffunction name="writeToFile">
@@ -106,7 +104,6 @@
 
 		<cfset _generateByteMatrix() />
 		<cfset oMatrixToImageWriter.writeToFile(variables.byteMatrix, variables.format, oFile, oMatrixToImageConfig) />
-
 	</cffunction>
 
 	<cffunction name="_getErrorCorrectionLevel" access="private">
@@ -120,15 +117,12 @@
 	</cffunction>
 
 	<cffunction name="_generateByteMatrix" access="private">
-
 		<cfset EncodeHintType = createObject('java', 'com.google.zxing.EncodeHintType') />
 		<cfset QRCodeWriter = createObject('java', 'com.google.zxing.qrcode.QRCodeWriter') />
 
 		<cfset hints = structNew() />
 		<cfset hints[EncodeHintType.ERROR_CORRECTION]= _getErrorCorrectionLevel() />
 		<cfset variables.byteMatrix = QRCodeWriter.encode(variables.data, _getBarcodeFormat(), variables.width, variables.height, hints) />
-
 	</cffunction>
-
 
 </cfcomponent>
