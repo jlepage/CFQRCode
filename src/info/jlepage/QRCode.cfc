@@ -1,6 +1,7 @@
-<cfcomponent output="false">
+component output="false" {
 	/*
 	Copyright (c) 2013, Jerome Lepage
+	Copyright (c) 2022, Conrad T. Pino
 
 	This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License
 	http://creativecommons.org/licenses/by-sa/3.0/
@@ -12,117 +13,144 @@
 	limitations under the License.
 	*/
 
-	<cffunction name="init">
-		<cfset variables.data = '' />
-		<cfset variables.width = 400 />
-		<cfset variables.height = 400 />
+	public any function init() {
+		variables.data = "";
+		variables.width = 400;
+		variables.height = 400;
 
-		<cfset variables.type = 'QR_CODE' />
-		<cfset variables.format = 'PNG' />
-		<cfset variables.quality = 'H' />
-		<cfset variables.foreground = _getArgbcolor('000000', 'FF') />
-		<cfset variables.background = _getArgbcolor('ffffff', 'FF') />
+		variables.type = "QR_CODE";
+		variables.format = "PNG";
+		variables.quality = "H";
+		variables.foreground = _getArgbcolor("000000", "FF");
+		variables.background = _getArgbcolor("ffffff", "FF");
 
-		<cfset variables.byteMatrix = '' />
+		variables.byteMatrix = "";
 
-		<cfreturn this />
-	</cffunction>
+		return this;
+	}
 
-	<cffunction name="setData">
-		<cfargument name="data" required="true" hint="like ##fff"/>
-		<cfset variables.data = arguments.data />
-	</cffunction>
+	/**
+	* @data like #fff
+	*/
+	public any function setData(required any data) {
+		variables.data = arguments.data;
+	}
 
-	<cffunction name="setSize">
-		<cfargument name="width" required="true" hint="in Pixel"/>
-		<cfargument name="height" required="true" hint="in Pixel"/>
-		<cfset variables.width = arguments.width />
-		<cfset variables.height = arguments.height />
-	</cffunction>
+	/**
+	* @width in Pixel
+	* @height in Pixel
+	*/
+	public any function setSize(
+		required any width,
+		required any height
+	) {
+		variables.width = arguments.width;
+		variables.height = arguments.height;
+	}
 
-	<cffunction name="setFormat">
-		<cfargument name="format" required="true" hint="like PNG/JPEG"/>
-		<cfset variables.format = arguments.format />
-	</cffunction>
+	/**
+	* @format like PNG/JPEG
+	*/
+	public any function setFormat(required any format) {
+		variables.format = arguments.format;
+	}
 
-	<cffunction name="setType">
-		<cfargument name="type" required="true" hint="like PNG/JPEG"/>
-		<cfset variables.type = arguments.type />
-	</cffunction>
+	/**
+	* @type like PNG/JPEG
+	*/
+	public any function setType(required any type) {
+		variables.type = arguments.type;
+	}
 
-	<cffunction name="setQuality">
-		<cfargument name="quality" required="true" hint="L/M/Q/H"/>
-		<cfset variables.quality = arguments.quality />
-	</cffunction>
+	/**
+	* @quality L/M/Q/H
+	*/
+	public any function setQuality(required any quality) {
+		variables.quality = arguments.quality;
+	}
 
-	<cffunction name="setColor">
-		<cfargument name="hexColor" required="true" hint="like ##fff"/>
-		<cfargument name="transparency" required="false" default="255" hint="0-255"/>
-		<cfset variables.foreground = _getArgbcolor(arguments.hexColor, arguments.transparency) />
-	</cffunction>
+	/**
+	* @hexColor like #fff
+	* @transparency 0-255
+	*/
+	public any function setColor(
+		required any hexColor,
+		any transparency = 255
+	) {
+		variables.foreground = _getArgbcolor(arguments.hexColor, arguments.transparency);
+	}
 
-	<cffunction name="setBackground">
-		<cfargument name="hexColor" required="true" hint="like ##fff"/>
-		<cfargument name="transparency" required="false" default="255" hint="0-255"/>
-		<cfset variables.background = _getArgbcolor(arguments.hexColor, arguments.transparency) />
-	</cffunction>
+	/**
+	* @hexColor like #fff
+	* @transparency 0-255
+	*/
+	public any function setBackground(
+		required any hexColor,
+		any transparency = 255
+	) {
+		variables.background = _getArgbcolor(arguments.hexColor, arguments.transparency);
+	}
 
-	<cffunction name="_getConfig" access="private">
-		<cfreturn createObject('java','com.google.zxing.client.j2se.MatrixToImageConfig').init(variables.foreground, variables.background) />
-	</cffunction>
+	public any function writeToFile(
+		required any fileName,
+		any path = ExpandPath(".")
+	) {
+		oMatrixToImageConfig = _getConfig();
+		oFile = createObject("java","java.io.File").init(arguments.path, arguments.fileName);
+		oMatrixToImageWriter = createObject("java","com.google.zxing.client.j2se.MatrixToImageWriter");
 
-	<cffunction name="_getARGBColor" access="private">
-		<cfargument name="hexColor" required="true" hint="like <sharp>fff or <sharp>c20000"/>
-		<cfargument name="alpha" required="false" default="ff" hint="00-FF"/>
+		_generateByteMatrix();
+		oMatrixToImageWriter.writeToFile(variables.byteMatrix, variables.format, oFile, oMatrixToImageConfig);
+	}
 
-		<cfset arguments.hexColor = replace(arguments.hexColor, chr(35), '', 'ALL') />
-		<cfif len(arguments.hexColor) eq 3>
-			<cfset r = mid(arguments.hexColor, 1, 1) />
-			<cfset g = mid(arguments.hexColor, 2, 1) />
-			<cfset b = mid(arguments.hexColor, 3, 1) />
-			<cfset r &= r />
-			<cfset g &= g />
-			<cfset b &= b />
-			<cfset arguments.hexColor = r & g & b />
+	private any function _getConfig() {
+		return createObject("java","com.google.zxing.client.j2se.MatrixToImageConfig").init(variables.foreground, variables.background);
+	}
 
-		</cfif>
+	/**
+	* @hexColor like #fff or #c20000
+	* @alpha 00-FF
+	*/
+	private any function _getARGBColor(
+		required any hexColor,
+		any alpha = "FF"
+	) {
+		arguments.hexColor = replace(arguments.hexColor, chr(35), "", "ALL");
+		if (len(arguments.hexColor) == 3) {
+			r = mid(arguments.hexColor, 1, 1);
+			g = mid(arguments.hexColor, 2, 1);
+			b = mid(arguments.hexColor, 3, 1);
+			r &= r;
+			g &= g;
+			b &= b;
+			arguments.hexColor = r & g & b;
+		}
 
-		<cfset a = arguments.alpha />
-		<cfset ipNumber = createObject('java', 'java.lang.Long').init(0) />
-		<cfset value = ipNumber.decode('0x' & a & arguments.hexColor) />
+		a = arguments.alpha;
+		ipNumber = createObject("java", "java.lang.Long").init(0);
+		value = ipNumber.decode("0x" & a & arguments.hexColor);
 
-		<cfreturn value />
-	</cffunction>
+		return value;
+	}
 
-	<cffunction name="writeToFile">
-		<cfargument name="fileName" required="true" />
-		<cfargument name="path" required="false" default="#expandPath('.')#" />
+	private any function _getErrorCorrectionLevel() {
+		ErrorCorrectionLevel = createObject("java", "com.google.zxing.qrcode.decoder.ErrorCorrectionLevel");
+		return ErrorCorrectionLevel.valueOf(variables.quality);
+	}
 
-		<cfset oMatrixToImageConfig = _getConfig() />
-		<cfset oFile = createObject('java','java.io.File').init(arguments.path, arguments.fileName) />
-		<cfset oMatrixToImageWriter = createObject('java','com.google.zxing.client.j2se.MatrixToImageWriter') />
+	private any function _getBarcodeFormat() {
+		BarcodeFormat = createObject("java", "com.google.zxing.BarcodeFormat");
+		return BarcodeFormat.valueOf(variables.type);
+	}
 
-		<cfset _generateByteMatrix() />
-		<cfset oMatrixToImageWriter.writeToFile(variables.byteMatrix, variables.format, oFile, oMatrixToImageConfig) />
-	</cffunction>
+	private any function _generateByteMatrix() {
+		EncodeHintType = createObject("java", "com.google.zxing.EncodeHintType");
+		QRCodeWriter = createObject("java", "com.google.zxing.qrcode.QRCodeWriter");
 
-	<cffunction name="_getErrorCorrectionLevel" access="private">
-		<cfset ErrorCorrectionLevel = createObject('java', 'com.google.zxing.qrcode.decoder.ErrorCorrectionLevel') />
-		<cfreturn ErrorCorrectionLevel.valueOf(variables.quality) />
-	</cffunction>
+		hints = structNew();
+		hints[EncodeHintType.ERROR_CORRECTION] = _getErrorCorrectionLevel();
 
-	<cffunction name="_getBarcodeFormat" access="private">
-		<cfset BarcodeFormat = createObject('java', 'com.google.zxing.BarcodeFormat') />
-		<cfreturn BarcodeFormat.valueOf(variables.type) />
-	</cffunction>
+		variables.byteMatrix = QRCodeWriter.encode(variables.data, _getBarcodeFormat(), variables.width, variables.height, hints);
+	}
 
-	<cffunction name="_generateByteMatrix" access="private">
-		<cfset EncodeHintType = createObject('java', 'com.google.zxing.EncodeHintType') />
-		<cfset QRCodeWriter = createObject('java', 'com.google.zxing.qrcode.QRCodeWriter') />
-
-		<cfset hints = structNew() />
-		<cfset hints[EncodeHintType.ERROR_CORRECTION]= _getErrorCorrectionLevel() />
-		<cfset variables.byteMatrix = QRCodeWriter.encode(variables.data, _getBarcodeFormat(), variables.width, variables.height, hints) />
-	</cffunction>
-
-</cfcomponent>
+}
