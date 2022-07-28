@@ -13,7 +13,7 @@ component output="false" {
 	limitations under the License.
 	*/
 
-	public any function init() {
+	public QRCode function init() {
 		variables.data = "";
 		variables.width = 400;
 		variables.height = 400;

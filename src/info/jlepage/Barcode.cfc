@@ -13,7 +13,7 @@ component output="false" {
 	limitations under the License.
 	*/
 
-	public any function init() {
+	public Barcode function init() {
 		variables.data = "";
 		variables.width = 200;
 		variables.height = 50;
