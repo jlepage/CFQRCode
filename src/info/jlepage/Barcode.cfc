@@ -1,6 +1,7 @@
-<cfcomponent output="false">
+component output="false" {
 	/*
 	Copyright (c) 2013, Jerome Lepage
+	Copyright (c) 2022, Conrad T. Pino
 
 	This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License
 	http://creativecommons.org/licenses/by-sa/3.0/
@@ -12,111 +13,116 @@
 	limitations under the License.
 	*/
 
-	<cffunction name="init">
-		<cfset variables.data = '' />
-		<cfset variables.width = 200 />
-		<cfset variables.height = 50 />
+	public any function init() {
+		variables.data = "";
+		variables.width = 200;
+		variables.height = 50;
 
-		<cfset variables.type = 'CODE_128' />
-		<cfset variables.format = 'PNG' />
-		<cfset variables.quality = 'H' />
+		variables.type = "CODE_128";
+		variables.format = "PNG";
+		variables.quality = "H";
 
-		<cfset variables.byteMatrix = '' />
+		variables.byteMatrix = "";
 
-		<cfreturn this />
-	</cffunction>
+		return this;
+	}
 
-	<cffunction name="setData">
-		<cfargument name="data" required="true" hint="content of the QRCode"/>
-		<cfset variables.data = arguments.data />
-	</cffunction>
+	/**
+	* @data content of the QRCode
+	*/
+	public any function setData(required any data) {
+		variables.data = arguments.data;
+	}
 
-	<cffunction name="setSize">
-		<cfargument name="width" required="true" hint="in Pixel"/>
-		<cfargument name="height" required="true" hint="in Pixel"/>
-		<cfset variables.width = arguments.width />
-		<cfset variables.height = arguments.height />
-	</cffunction>
+	/**
+	* @width in Pixel
+	* @height in Pixel
+	*/
+	public any function setSize(
+		required any width,
+		required any height
+	) {
+		variables.width = arguments.width;
+		variables.height = arguments.height;
+	}
 
-	<cffunction name="setFormat">
-		<cfargument name="format" required="true" hint="like PNG/JPEG"/>
-		<cfset variables.format = arguments.format />
-	</cffunction>
+	/**
+	* @format like PNG/JPEG
+	*/
+	public any function setFormat(required any format) {
+		variables.format = arguments.format;
+	}
 
-	<cffunction name="setType">
-		<cfargument name="type" required="true" hint="like CODE_128"/>
-		<cfset variables.type = arguments.type />
-	</cffunction>
+	/**
+	* @type like CODE_128
+	*/
+	public any function setType(required any type) {
+		variables.type = arguments.type;
+	}
 
-	<cffunction name="setQuality">
-		<cfargument name="quality" required="true" hint="L/M/Q/H"/>
-		<cfset variables.quality = arguments.quality />
-	</cffunction>
+	/**
+	* @quality L/M/Q/H
+	*/
+	public any function setQuality(required any quality) {
+		variables.quality = arguments.quality;
+	}
 
-	<cffunction name="_getConfig" access="private">
-		<cfreturn createObject('java','com.google.zxing.client.j2se.MatrixToImageConfig').init()/>
-	</cffunction>
+	public any function writeToFile(
+		required any fileName,
+		any path = ExpandPath(".")
+	) {
+		oMatrixToImageConfig = _getConfig();
+		oFile = createObject("java","java.io.File").init(arguments.path, arguments.fileName);
+		oMatrixToImageWriter = createObject("java","com.google.zxing.client.j2se.MatrixToImageWriter");
 
-	<cffunction name="writeToFile">
-		<cfargument name="fileName" required="true" />
-		<cfargument name="path" required="false" default="#expandPath('.')#" />
+		_generateByteMatrix();
+		oMatrixToImageWriter.writeToFile(variables.byteMatrix, variables.format, oFile, oMatrixToImageConfig);
+	}
 
-		<cfset oMatrixToImageConfig = _getConfig() />
-		<cfset oFile = createObject('java','java.io.File').init(arguments.path, arguments.fileName) />
-		<cfset oMatrixToImageWriter = createObject('java','com.google.zxing.client.j2se.MatrixToImageWriter') />
+	private any function _getConfig() {
+		return createObject("java","com.google.zxing.client.j2se.MatrixToImageConfig").init();
+	}
 
-		<cfset _generateByteMatrix() />
-		<cfset oMatrixToImageWriter.writeToFile(variables.byteMatrix, variables.format, oFile, oMatrixToImageConfig) />
-	</cffunction>
+	private any function _getErrorCorrectionLevel() {
+		ErrorCorrectionLevel = createObject("java", "com.google.zxing.qrcode.decoder.ErrorCorrectionLevel");
+		return ErrorCorrectionLevel.valueOf(variables.quality);
+	}
 
-	<cffunction name="_getErrorCorrectionLevel" access="private">
-		<cfset ErrorCorrectionLevel = createObject('java', 'com.google.zxing.qrcode.decoder.ErrorCorrectionLevel') />
-		<cfreturn ErrorCorrectionLevel.valueOf(variables.quality) />
-	</cffunction>
+	private any function _getBarcodeFormat() {
+		BarcodeFormat = createObject("java", "com.google.zxing.BarcodeFormat");
+		return BarcodeFormat.valueOf(variables.type);
+	}
 
-	<cffunction name="_getBarcodeFormat" access="private">
-		<cfset BarcodeFormat = createObject('java', 'com.google.zxing.BarcodeFormat') />
-		<cfreturn BarcodeFormat.valueOf(variables.type) />
-	</cffunction>
+	private any function _generateByteMatrix() {
+		Writer = _getWriter();
+		EncodeHintType = createObject("java", "com.google.zxing.EncodeHintType");
 
-	<cffunction name="_generateByteMatrix" access="private">
-		<cfset Writer = _getWriter() />
-		<cfset EncodeHintType = createObject('java', 'com.google.zxing.EncodeHintType') />
+		hints = structNew();
+		hints[EncodeHintType.ERROR_CORRECTION] = _getErrorCorrectionLevel();
 
-		<cfset hints = structNew() />
-		<cfset hints[EncodeHintType.ERROR_CORRECTION]= _getErrorCorrectionLevel() />
+		variables.byteMatrix = Writer.encode(variables.data, _getBarcodeFormat(), variables.width, variables.height, hints);
+	}
 
-		<cfset variables.byteMatrix = Writer.encode(variables.data, _getBarcodeFormat(), variables.width, variables.height, hints) />
-	</cffunction>
+	private any function _getWriter() {
+		switch (variables.type) {
+		case "CODE_39":
+			return createObject("java", "com.google.zxing.oned.Code39Writer").init();
+		case "EAN_13":
+			return createObject("java", "com.google.zxing.oned.EAN13Writer").init();
+		case "EAN_8":
+			return createObject("java", "com.google.zxing.oned.EAN8Writer").init();
+		case "CODABAR":
+			return createObject("java", "com.google.zxing.oned.CodaBarWriter").init();
+		case "UPC_A":
+			return createObject("java", "com.google.zxing.oned.UPCAWriter").init();
+		case "PDF_417":
+			return createObject("java", "com.google.zxing.pdf417.encoder.PDF417Writer").init();
+		case "AZTEC":
+			return createObject("java", "com.google.zxing.aztec.AztecWriter").init();
+		case "CODE_128":
+		default:
+			return createObject("java", "com.google.zxing.oned.Code128Writer").init();
+		}
+	}
 
-	<cffunction name="_getWriter" access="private">
-		<cfif variables.type eq 'CODE_128'>
-			<cfreturn createObject('java', 'com.google.zxing.oned.Code128Writer').init() />
-
-		<cfelseif variables.type eq 'CODE_39'>
-			<cfreturn createObject('java', 'com.google.zxing.oned.Code39Writer').init() />
-
-		<cfelseif variables.type eq 'EAN_13'>
-			<cfreturn createObject('java', 'com.google.zxing.oned.EAN13Writer').init() />
-
-		<cfelseif variables.type eq 'EAN_8'>
-			<cfreturn createObject('java', 'com.google.zxing.oned.EAN8Writer').init() />
-
-		<cfelseif variables.type eq 'CODABAR'>
-			<cfreturn createObject('java', 'com.google.zxing.oned.CodaBarWriter').init() />
-
-		<cfelseif variables.type eq 'UPC_A'>
-			<cfreturn createObject('java', 'com.google.zxing.oned.UPCAWriter').init() />
-
-		<cfelseif variables.type eq 'PDF_417'>
-			<cfreturn createObject('java', 'com.google.zxing.pdf417.encoder.PDF417Writer').init() />
-
-		<cfelseif variables.type eq 'AZTEC'>
-			<cfreturn createObject('java', 'com.google.zxing.aztec.AztecWriter').init() />
-
-		<cfelse>
-			<cfreturn createObject('java', 'com.google.zxing.oned.Code128Writer').init() />
-		</cfif>
-	</cffunction>
-
-</cfcomponent>
+}
