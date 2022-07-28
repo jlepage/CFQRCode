@@ -33,7 +33,7 @@ ZXING
 ========
 
 Please visite the ZXing project at : <br/>
-http://code.google.com/p/zxing/
+https://github.com/zxing/zxing
 
 ZXING is under Apache License 2.0 <br/>
 http://www.apache.org/licenses/LICENSE-2.0
