@@ -105,7 +105,7 @@ component output="false" {
 		oMatrixToImageWriter.writeToFile(variables.byteMatrix, variables.format, oFile, oMatrixToImageConfig);
 	}
 
-	private any function _getConfig() {
+	private com.google.zxing.client.j2se.MatrixToImageConfig function _getConfig() {
 		return createObject("java","com.google.zxing.client.j2se.MatrixToImageConfig").init(variables.foreground, variables.background);
 	}
 
@@ -113,7 +113,7 @@ component output="false" {
 	* @hexColor like #fff or #c20000
 	* @alpha 00-FF
 	*/
-	private any function _getARGBColor(
+	private numeric function _getARGBColor(
 		required string hexColor,
 		string alpha = "FF"
 	) {
@@ -135,12 +135,12 @@ component output="false" {
 		return value;
 	}
 
-	private any function _getErrorCorrectionLevel() {
+	private com.google.zxing.qrcode.decoder.ErrorCorrectionLevel function _getErrorCorrectionLevel() {
 		ErrorCorrectionLevel = createObject("java", "com.google.zxing.qrcode.decoder.ErrorCorrectionLevel");
 		return ErrorCorrectionLevel.valueOf(variables.quality);
 	}
 
-	private any function _getBarcodeFormat() {
+	private com.google.zxing.BarcodeFormat function _getBarcodeFormat() {
 		BarcodeFormat = createObject("java", "com.google.zxing.BarcodeFormat");
 		return BarcodeFormat.valueOf(variables.type);
 	}

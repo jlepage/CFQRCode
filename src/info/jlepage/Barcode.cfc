@@ -79,16 +79,16 @@ component output="false" {
 		oMatrixToImageWriter.writeToFile(variables.byteMatrix, variables.format, oFile, oMatrixToImageConfig);
 	}
 
-	private any function _getConfig() {
+	private com.google.zxing.client.j2se.MatrixToImageConfig function _getConfig() {
 		return createObject("java","com.google.zxing.client.j2se.MatrixToImageConfig").init();
 	}
 
-	private any function _getErrorCorrectionLevel() {
+	private com.google.zxing.qrcode.decoder.ErrorCorrectionLevel function _getErrorCorrectionLevel() {
 		ErrorCorrectionLevel = createObject("java", "com.google.zxing.qrcode.decoder.ErrorCorrectionLevel");
 		return ErrorCorrectionLevel.valueOf(variables.quality);
 	}
 
-	private any function _getBarcodeFormat() {
+	private com.google.zxing.BarcodeFormat function _getBarcodeFormat() {
 		BarcodeFormat = createObject("java", "com.google.zxing.BarcodeFormat");
 		return BarcodeFormat.valueOf(variables.type);
 	}
@@ -103,7 +103,7 @@ component output="false" {
 		variables.byteMatrix = Writer.encode(variables.data, _getBarcodeFormat(), variables.width, variables.height, hints);
 	}
 
-	private any function _getWriter() {
+	private com.google.zxing.Writer function _getWriter() {
 		switch (variables.type) {
 		case "CODE_39":
 			return createObject("java", "com.google.zxing.oned.Code39Writer").init();
