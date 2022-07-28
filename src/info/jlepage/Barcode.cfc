@@ -30,7 +30,7 @@ component output="false" {
 	/**
 	* @data content of the QRCode
 	*/
-	public void function setData(required any data) {
+	public void function setData(required string data) {
 		variables.data = arguments.data;
 	}
 
@@ -39,8 +39,8 @@ component output="false" {
 	* @height in Pixel
 	*/
 	public void function setSize(
-		required any width,
-		required any height
+		required numeric width,
+		required numeric height
 	) {
 		variables.width = arguments.width;
 		variables.height = arguments.height;
@@ -49,27 +49,27 @@ component output="false" {
 	/**
 	* @format like PNG/JPEG
 	*/
-	public void function setFormat(required any format) {
+	public void function setFormat(required string format) {
 		variables.format = arguments.format;
 	}
 
 	/**
 	* @type like CODE_128
 	*/
-	public void function setType(required any type) {
+	public void function setType(required string type) {
 		variables.type = arguments.type;
 	}
 
 	/**
 	* @quality L/M/Q/H
 	*/
-	public void function setQuality(required any quality) {
+	public void function setQuality(required string quality) {
 		variables.quality = arguments.quality;
 	}
 
 	public void function writeToFile(
-		required any fileName,
-		any path = ExpandPath(".")
+		required string fileName,
+		string path = ExpandPath(".")
 	) {
 		oMatrixToImageConfig = _getConfig();
 		oFile = createObject("java","java.io.File").init(arguments.path, arguments.fileName);
