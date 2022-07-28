@@ -1,5 +1,5 @@
 <cfcomponent output="false">
-	/**
+	/*
 	Copyright (c) 2013, Jerome Lepage
 
 	This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License
