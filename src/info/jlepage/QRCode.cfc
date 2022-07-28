@@ -32,7 +32,7 @@ component output="false" {
 	/**
 	* @data like #fff
 	*/
-	public any function setData(required any data) {
+	public void function setData(required any data) {
 		variables.data = arguments.data;
 	}
 
@@ -40,7 +40,7 @@ component output="false" {
 	* @width in Pixel
 	* @height in Pixel
 	*/
-	public any function setSize(
+	public void function setSize(
 		required any width,
 		required any height
 	) {
@@ -51,21 +51,21 @@ component output="false" {
 	/**
 	* @format like PNG/JPEG
 	*/
-	public any function setFormat(required any format) {
+	public void function setFormat(required any format) {
 		variables.format = arguments.format;
 	}
 
 	/**
 	* @type like PNG/JPEG
 	*/
-	public any function setType(required any type) {
+	public void function setType(required any type) {
 		variables.type = arguments.type;
 	}
 
 	/**
 	* @quality L/M/Q/H
 	*/
-	public any function setQuality(required any quality) {
+	public void function setQuality(required any quality) {
 		variables.quality = arguments.quality;
 	}
 
@@ -73,7 +73,7 @@ component output="false" {
 	* @hexColor like #fff
 	* @transparency 0-255
 	*/
-	public any function setColor(
+	public void function setColor(
 		required any hexColor,
 		any transparency = 255
 	) {
@@ -84,14 +84,14 @@ component output="false" {
 	* @hexColor like #fff
 	* @transparency 0-255
 	*/
-	public any function setBackground(
+	public void function setBackground(
 		required any hexColor,
 		any transparency = 255
 	) {
 		variables.background = _getArgbcolor(arguments.hexColor, arguments.transparency);
 	}
 
-	public any function writeToFile(
+	public void function writeToFile(
 		required any fileName,
 		any path = ExpandPath(".")
 	) {
@@ -143,7 +143,7 @@ component output="false" {
 		return BarcodeFormat.valueOf(variables.type);
 	}
 
-	private any function _generateByteMatrix() {
+	private void function _generateByteMatrix() {
 		EncodeHintType = createObject("java", "com.google.zxing.EncodeHintType");
 		QRCodeWriter = createObject("java", "com.google.zxing.qrcode.QRCodeWriter");
 
