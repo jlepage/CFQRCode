@@ -74,10 +74,11 @@ component output="false" {
 	* @transparency 0-255
 	*/
 	public void function setColor(
-		required any hexColor,
-		any transparency = 255
+		required string hexColor,
+		numeric transparency = 255
 	) {
-		variables.foreground = _getArgbcolor(arguments.hexColor, arguments.transparency);
+		var alpha = FormatBaseN(arguments.transparency, 16);
+		variables.foreground = _getArgbcolor(arguments.hexColor, alpha);
 	}
 
 	/**
@@ -85,10 +86,11 @@ component output="false" {
 	* @transparency 0-255
 	*/
 	public void function setBackground(
-		required any hexColor,
-		any transparency = 255
+		required string hexColor,
+		numeric transparency = 255
 	) {
-		variables.background = _getArgbcolor(arguments.hexColor, arguments.transparency);
+		var alpha = FormatBaseN(arguments.transparency, 16);
+		variables.background = _getArgbcolor(arguments.hexColor, alpha);
 	}
 
 	public void function writeToFile(
@@ -112,8 +114,8 @@ component output="false" {
 	* @alpha 00-FF
 	*/
 	private any function _getARGBColor(
-		required any hexColor,
-		any alpha = "FF"
+		required string hexColor,
+		string alpha = "FF"
 	) {
 		arguments.hexColor = replace(arguments.hexColor, chr(35), "", "ALL");
 		if (len(arguments.hexColor) == 3) {
