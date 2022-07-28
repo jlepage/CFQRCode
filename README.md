@@ -36,7 +36,7 @@ Please visite the ZXing project at : <br/>
 https://github.com/zxing/zxing
 
 ZXING is under Apache License 2.0 <br/>
-http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0<br/>
 https://github.com/zxing/zxing/blob/master/LICENSE
 
 
