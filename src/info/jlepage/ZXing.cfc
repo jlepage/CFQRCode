@@ -87,9 +87,13 @@ abstract component output="false" {
 	) {
 		_generateBitMatrix();
 		var oMatrixToImageConfig = getConfig();
+		var MatrixToImageWriter = this._getMatrixToImageWriter();
 		var oFile = CreateObject("java", "java.io.File").init(arguments.path, arguments.fileName);
-		var MatrixToImageWriter = CreateObject("java","com.google.zxing.client.j2se.MatrixToImageWriter");
 		MatrixToImageWriter.writeToFile(this.BitMatrix, this.format, oFile, oMatrixToImageConfig);
+	}
+
+	private any function _getMatrixToImageWriter() {
+		return CreateObject("java","com.google.zxing.client.j2se.MatrixToImageWriter");
 	}
 
 	private any function _getErrorCorrectionLevel() {
