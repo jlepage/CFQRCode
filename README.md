@@ -4,13 +4,18 @@ Coldfusion CFML QR-Code Generator - Write QRCode to a file with less effort
 
 INSTALL
 ========
-1. Add ZXing QRCode libraries<br/>
-Put the jars files on `lib` folder on your CFML Engine `CLASSPATH`
-   * Coldfusion : &lt;CFPATH&gt;`/runtime/lib`
+1. Add ZXing QRCode libraries:
+   * `lib/zxing-3.5.0-core.jar`
+   * `lib/zxing-3.5.0-javase.jar`
+2. Put JAR files in `lib` folder on your CFML Engine `CLASSPATH`
+   * Coldfusion: &lt;CFPATH&gt;`/runtime/lib`
    * Railo: &lt;CFProject&gt;`/WEB-INF/railo/lib`
    * Lucee: &lt;CFProject&gt;`/WEB-INF/lib`
-2. Add the CFC set to your project
-3. Play with it !
+3. Add the CFC set to your project
+   * `src/info/jlepage/Barcode.cfc`
+   * `src/info/jlepage/QRCode.cfc`
+   * `src/info/jlepage/ZXing.cfc`
+4. Play with it!
 
 CFML Sample :
 ```
