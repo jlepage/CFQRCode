@@ -31,9 +31,19 @@ qrCode.setData("Hello World!");
 qrCode.writeToFile("myQRCode.png");
 </cfscript>
 ```
+CFScript direct image binary:
+```
+<cfscript>
+qrCode = new info.jlepage.QRCode();
+qrCode.setData("Hello World!");
+imageBinary = qrCode.readBinary();
+</cfscript>
+```
 Can be more easy? :smiley:
 
-More samples on index.cfm
+More samples in:
+* `src/index.cfm`
+* `src/barcode.cfm`
 
 ZXING
 ========
