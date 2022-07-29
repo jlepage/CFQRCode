@@ -74,6 +74,5 @@ qrCode.writeToFile(fileName, path);
 <cfoutput>
 <img src="img/#fileName#" alt="Scan Me!" border="0" />
 </cfoutput>
-
 <hr>
 <a href="http://www.jlepage.info" target="_blank">&copy; JLepage.info 2013</a>
