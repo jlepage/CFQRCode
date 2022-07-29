@@ -18,6 +18,14 @@ CFML Sample :
 <cfset qrCode.setData("Hello World!") />
 <cfset qrCode.writeToFile("myQRCode.png") />
 ```
+CFScript Sample :
+```
+<cfscript>
+qrCode = new info.jlepage.QRCode();
+qrCode.setData("Hello World!");
+qrCode.writeToFile("myQRCode.png");
+</cfscript>
+```
 Can be more easy ? :)
 
 More samples on index.cfm
