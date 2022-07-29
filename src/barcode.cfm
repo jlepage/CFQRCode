@@ -38,7 +38,7 @@ code.writeToFile(fileName, path);
 code = new info.jlepage.Barcode();
 path =  expandPath("img");
 
-code.setData("A5901234123457N");
+code.setData("A5901234123457A");
 code.setQuality("Q");
 code.setType("CODABAR");
 
