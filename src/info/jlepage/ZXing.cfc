@@ -102,13 +102,15 @@ abstract component output="false" {
 	}
 
 	private void function _generateBitMatrix() {
-		var thisWriter = this._getWriter();
-		var EncodeHintType = CreateObject("java", "com.google.zxing.EncodeHintType");
+		if (IsNull(this.BitMatrix)) {
+			var thisWriter = this._getWriter();
+			var EncodeHintType = CreateObject("java", "com.google.zxing.EncodeHintType");
 
-		var hints = structNew();
-		hints[EncodeHintType.ERROR_CORRECTION] = _getErrorCorrectionLevel();
+			var hints = structNew();
+			hints[EncodeHintType.ERROR_CORRECTION] = _getErrorCorrectionLevel();
 
-		this.BitMatrix = thisWriter.encode(this.data, _getBarcodeFormat(), this.width, this.height, hints);
+			this.BitMatrix = thisWriter.encode(this.data, _getBarcodeFormat(), this.width, this.height, hints);
+		}
 	}
 
 	private any function _getWriter() {
