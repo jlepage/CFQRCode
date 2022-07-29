@@ -1,4 +1,4 @@
-component output="false" {
+component extends="ZXing" output="false" {
 	/*
 	Copyright (c) 2013, Jerome Lepage
 	Copyright (c) 2022, Conrad T. Pino
@@ -13,60 +13,20 @@ component output="false" {
 	limitations under the License.
 	*/
 
+	private this.foreground;
+	private this.background;
+
 	public QRCode function init() {
-		variables.data = "";
-		variables.width = 400;
-		variables.height = 400;
+		super.init("QR_CODE", 400, 400);
 
-		variables.type = "QR_CODE";
-		variables.format = "PNG";
-		variables.quality = "H";
-		variables.foreground = _getArgbcolor("000000", "FF");
-		variables.background = _getArgbcolor("ffffff", "FF");
-
-		variables.byteMatrix = "";
+		this.foreground = _getArgbcolor("000000", "FF");
+		this.background = _getArgbcolor("ffffff", "FF");
 
 		return this;
 	}
 
-	/**
-	* @data like #fff
-	*/
-	public void function setData(required string data) {
-		variables.data = arguments.data;
-	}
-
-	/**
-	* @width in Pixel
-	* @height in Pixel
-	*/
-	public void function setSize(
-		required numeric width,
-		required numeric height
-	) {
-		variables.width = arguments.width;
-		variables.height = arguments.height;
-	}
-
-	/**
-	* @format like PNG/JPEG
-	*/
-	public void function setFormat(required string format) {
-		variables.format = arguments.format;
-	}
-
-	/**
-	* @type like PNG/JPEG
-	*/
-	public void function setType(required string type) {
-		variables.type = arguments.type;
-	}
-
-	/**
-	* @quality L/M/Q/H
-	*/
-	public void function setQuality(required string quality) {
-		variables.quality = arguments.quality;
+	public any function getConfig() {
+		return CreateObject("java","com.google.zxing.client.j2se.MatrixToImageConfig").init(this.foreground, this.background);
 	}
 
 	/**
@@ -78,7 +38,7 @@ component output="false" {
 		numeric transparency = 255
 	) {
 		var alpha = FormatBaseN(arguments.transparency, 16);
-		variables.foreground = _getArgbcolor(arguments.hexColor, alpha);
+		this.foreground = _getArgbcolor(arguments.hexColor, alpha);
 	}
 
 	/**
@@ -90,23 +50,7 @@ component output="false" {
 		numeric transparency = 255
 	) {
 		var alpha = FormatBaseN(arguments.transparency, 16);
-		variables.background = _getArgbcolor(arguments.hexColor, alpha);
-	}
-
-	public void function writeToFile(
-		required string fileName,
-		string path = ExpandPath(".")
-	) {
-		oMatrixToImageConfig = _getConfig();
-		oFile = createObject("java","java.io.File").init(arguments.path, arguments.fileName);
-		oMatrixToImageWriter = createObject("java","com.google.zxing.client.j2se.MatrixToImageWriter");
-
-		_generateByteMatrix();
-		oMatrixToImageWriter.writeToFile(variables.byteMatrix, variables.format, oFile, oMatrixToImageConfig);
-	}
-
-	private com.google.zxing.client.j2se.MatrixToImageConfig function _getConfig() {
-		return createObject("java","com.google.zxing.client.j2se.MatrixToImageConfig").init(variables.foreground, variables.background);
+		this.background = _getArgbcolor(arguments.hexColor, alpha);
 	}
 
 	/**
@@ -133,26 +77,6 @@ component output="false" {
 		value = ipNumber.decode("0x" & a & arguments.hexColor);
 
 		return value;
-	}
-
-	private com.google.zxing.qrcode.decoder.ErrorCorrectionLevel function _getErrorCorrectionLevel() {
-		ErrorCorrectionLevel = createObject("java", "com.google.zxing.qrcode.decoder.ErrorCorrectionLevel");
-		return ErrorCorrectionLevel.valueOf(variables.quality);
-	}
-
-	private com.google.zxing.BarcodeFormat function _getBarcodeFormat() {
-		BarcodeFormat = createObject("java", "com.google.zxing.BarcodeFormat");
-		return BarcodeFormat.valueOf(variables.type);
-	}
-
-	private void function _generateByteMatrix() {
-		EncodeHintType = createObject("java", "com.google.zxing.EncodeHintType");
-		QRCodeWriter = createObject("java", "com.google.zxing.qrcode.QRCodeWriter");
-
-		hints = structNew();
-		hints[EncodeHintType.ERROR_CORRECTION] = _getErrorCorrectionLevel();
-
-		variables.byteMatrix = QRCodeWriter.encode(variables.data, _getBarcodeFormat(), variables.width, variables.height, hints);
 	}
 
 }
