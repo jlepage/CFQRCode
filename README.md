@@ -17,13 +17,13 @@ INSTALL
    * `src/info/jlepage/ZXing.cfc`
 4. Play with it!
 
-CFML Sample :
+CFML Sample:
 ```
 <cfset qrCode = new info.jlepage.QRCode() />
 <cfset qrCode.setData("Hello World!") />
 <cfset qrCode.writeToFile("myQRCode.png") />
 ```
-CFScript Sample :
+CFScript Sample:
 ```
 <cfscript>
 qrCode = new info.jlepage.QRCode();
@@ -31,7 +31,7 @@ qrCode.setData("Hello World!");
 qrCode.writeToFile("myQRCode.png");
 </cfscript>
 ```
-Can be more easy ? :)
+Can be more easy? :)
 
 More samples on index.cfm
 
