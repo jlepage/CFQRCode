@@ -82,7 +82,7 @@ abstract component output="false" {
 	}
 
 	public binary function readBinary() {
-		_generateBitMatrix();
+		this._generateBitMatrix();
 		var oMatrixToImageConfig = getConfig();
 		var MatrixToImageWriter = this._getMatrixToImageWriter();
 		var BAOS = CreateObject("java", "java.io.ByteArrayOutputStream").init();
@@ -94,7 +94,7 @@ abstract component output="false" {
 		required string fileName,
 		string path = ExpandPath(".")
 	) {
-		_generateBitMatrix();
+		this._generateBitMatrix();
 		var oMatrixToImageConfig = getConfig();
 		var MatrixToImageWriter = this._getMatrixToImageWriter();
 		var oFile = CreateObject("java", "java.io.File").init(arguments.path, arguments.fileName);
@@ -119,9 +119,9 @@ abstract component output="false" {
 		var EncodeHintType = CreateObject("java", "com.google.zxing.EncodeHintType");
 
 		var hints = structNew();
-		hints[EncodeHintType.ERROR_CORRECTION] = _getErrorCorrectionLevel();
+		hints[EncodeHintType.ERROR_CORRECTION] = this._getErrorCorrectionLevel();
 
-		this.BitMatrix = thisWriter.encode(this.data, _getBarcodeFormat(), this.width, this.height, hints);
+		this.BitMatrix = thisWriter.encode(this.data, this._getBarcodeFormat(), this.width, this.height, hints);
 	}
 
 	private any function _getWriter() {

@@ -38,7 +38,7 @@ component extends="ZXing" output="false" {
 		numeric transparency = 255
 	) {
 		var alpha = FormatBaseN(arguments.transparency, 16);
-		this.foreground = _getArgbcolor(arguments.hexColor, alpha);
+		this.foreground = this._getArgbcolor(arguments.hexColor, alpha);
 	}
 
 	/**
@@ -50,7 +50,7 @@ component extends="ZXing" output="false" {
 		numeric transparency = 255
 	) {
 		var alpha = FormatBaseN(arguments.transparency, 16);
-		this.background = _getArgbcolor(arguments.hexColor, alpha);
+		this.background = this._getArgbcolor(arguments.hexColor, alpha);
 	}
 
 	/**
