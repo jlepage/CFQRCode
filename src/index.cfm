@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>index.cfm</title>
+</head>
+<body>
 <cfscript>
 // Generate a QRCode Object
 qrCode = new info.jlepage.QRCode();
@@ -76,3 +82,5 @@ qrCode.writeToFile(fileName, path);
 </cfoutput>
 <hr>
 <a href="http://www.jlepage.info" target="_blank">&copy; JLepage.info 2013</a>
+</body>
+</html>

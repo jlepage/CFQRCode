@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>barcode.cfm</title>
+</head>
+<body>
 <cfscript>
 code = new info.jlepage.Barcode();
 path =  expandPath("img");
@@ -43,3 +49,5 @@ code.writeToFile(fileName, path);
 <cfoutput>
 <img src="img/#fileName#" alt="Scan Me!" border="0" />
 </cfoutput>
+</body>
+</html>
