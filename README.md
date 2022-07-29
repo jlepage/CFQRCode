@@ -31,7 +31,7 @@ qrCode.setData("Hello World!");
 qrCode.writeToFile("myQRCode.png");
 </cfscript>
 ```
-Can be more easy? :)
+Can be more easy? :smiley:
 
 More samples on index.cfm
 
