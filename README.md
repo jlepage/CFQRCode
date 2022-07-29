@@ -12,13 +12,12 @@ Put the jars files on `lib` folder on your CFML Engine `CLASSPATH`
 2. Add the CFC set to your project
 3. Play with it !
 
-Sample:
-<code>
-&lt;cfset qrCode = new info.jlepage.QRCode() /&gt;<br/>
-&lt;cfset qrCode.setData('Hello World !') /&gt;<br/>
-&lt;cfset qrCode.writeToFile('myQRCode.png') /&gt;<br/>
-</code>
-
+CFML Sample :
+```
+<cfset qrCode = new info.jlepage.QRCode() />
+<cfset qrCode.setData("Hello World!") />
+<cfset qrCode.writeToFile("myQRCode.png") />
+```
 Can be more easy ? :)
 
 More samples on index.cfm
