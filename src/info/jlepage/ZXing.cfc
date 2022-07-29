@@ -81,6 +81,15 @@ abstract component output="false" {
 		this.quality = arguments.quality;
 	}
 
+	public binary function readBinary() {
+		_generateBitMatrix();
+		var oMatrixToImageConfig = getConfig();
+		var MatrixToImageWriter = this._getMatrixToImageWriter();
+		var BAOS = CreateObject("java", "java.io.ByteArrayOutputStream").init();
+		MatrixToImageWriter.writeToStream(this.BitMatrix, this.format, BAOS, oMatrixToImageConfig);
+		return BAOS.toByteArray();
+	}
+
 	public void function writeToFile(
 		required string fileName,
 		string path = ExpandPath(".")
